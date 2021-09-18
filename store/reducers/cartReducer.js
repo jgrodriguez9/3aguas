@@ -2,9 +2,11 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { firebase } from '../../firebase';
+import { data } from './products';
 const db = firebase.firestore();
 const dbOrderRef = db.collection('products');
 import cookie from 'js-cookie';
+const keys = require("../../server/config/keys");
 
 import { 
     ADD_TO_CART,
@@ -19,6 +21,7 @@ import {
     CHECK_USRER_LOGIN,
     USRER_LOGOUT
 } from '../actions/action-types/cart-actions'
+import Commerce from "@chec/commerce.js";
 
 const token = '76483461103103918uhkjdkjc';
 
@@ -28,7 +31,7 @@ const initState = {
     total: 0,
     shipping: 0,
     login: false
-}
+};
 
 const cartReducer = (state = initState, action) => {
 
@@ -82,20 +85,27 @@ const cartReducer = (state = initState, action) => {
 
     if(action.type === ADD_PRODUCTS){
         let productsArray = [];
-        dbOrderRef.get()
-        .then(res => {
-            res.forEach(doc => {
-                let productsObj = doc.data();
-                productsObj.id = doc.id;
-                productsArray.push(productsObj)
-            });
-        });
+        // dbOrderRef.get()
+        // .then(res => {
+        //     res.forEach(doc => {
+        //         let productsObj = doc.data();
+        //         productsObj.id = doc.id;
+        //         productsArray.push(productsObj)
+        //     });
+        // });
+        const commerce = new Commerce(keys.commerceJsKey);
 
-        // console.log('www', productsArray)
+        commerce.products.list().then((product) => {
+            product.data.forEach( p => {
+                productsArray.push(p);
+                console.log('www', p)
+                }
+            );
+        });
         
         return{
             ...state,
-            products: productsArray
+            products: data
         }
     }
    

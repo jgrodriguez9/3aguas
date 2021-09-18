@@ -6,16 +6,16 @@ const Layout = ({children}) => {
     const [loader, setLoader] = React.useState(true);
 
     React.useEffect(() => {
-        setTimeout(() => setLoader(false), 2000);
-    }, [])
+        setTimeout(() => setLoader(false), 1000);
+    }, []);
 
     return(
         <React.Fragment>
             <Head>
-                <title>Livani - React Next eCommerce Template</title>
-                <meta name="description" content="Livani - React Next eCommerce Template. This has been built with React, Next.js, Express.js, and ES6+" />
-                <meta name="og:title" property="og:title" content="Livani - React Next eCommerce Template"></meta>
-                <meta name="twitter:card" content="Livani - React Next eCommerce Template"></meta>
+                <title>3 Aguas</title>
+                <meta name="description" content="3 Aguas - Tienda Playa" />
+                <meta name="og:title" property="og:title" content="3 Aguas - Tienda Playa"></meta>
+                <meta name="twitter:card" content="3 Aguas - Tienda Playa"></meta>
                 <link rel="canonical" href="https://livani-react.envytheme.com/"></link>
                 <meta property="og:image" content="https://demaxin.s3.ap-south-1.amazonaws.com/cd19-2-1589216093113.jpg" />
             </Head>
