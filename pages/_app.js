@@ -1,17 +1,25 @@
 import '../styles.scss';
-import React from 'react';
-import { Provider } from 'react-redux';
+import React, { useEffect } from 'react';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
-import { initStore } from '../store/reducers/cartReducer';
 import { ToastContainer } from 'react-toastify';
 import Layout from '../components/_App/Layout';
-import { checkUserLogin, addProducts } from '../store/actions/cartActions';
+import { addProducts } from '../store/actions/cartActions';
+import { checkUserLogin } from '../store/actions/securityAction';
+import store from '../store/store';
 
-const MyApp = ({Component, pageProps, store}) => {
-    React.useEffect(() => {
-        store.dispatch(checkUserLogin())
-        store.dispatch(addProducts())
-    });
+
+
+const MyApp = ({Component, pageProps}) => {
+    
+
+    
+    // React.useEffect(() => {
+    //     store.dispatch(checkUserLogin())
+    //     store.dispatch(addProducts())
+    // });
+
+
     return (
         <Layout>
             <ToastContainer />
@@ -30,5 +38,7 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     return { pageProps }
 };
 
+const makeStore = () => store;
 
-export default withRedux(initStore)(MyApp)
+
+export default withRedux(makeStore)(MyApp)

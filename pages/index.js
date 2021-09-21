@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import TopHeader from '../components/Layouts/TopHeader';
 import Navbar from '../components/Layouts/Navbar';
 import MainBanner from '../components/HomeOne/MainBanner';
@@ -15,8 +15,10 @@ import PopularProducts from '../components/HomeOne/PopularProducts';
 import BestSellingProducts from '../components/HomeOne/BestSellingProducts';
 
 const Index = ({ products }) => {
+
     return (
         <React.Fragment>
+            <TopHeader />
             <Navbar />
             <MainBanner />
             <CategoriesBanner />
@@ -35,7 +37,7 @@ const Index = ({ products }) => {
 
 const mapStateToProps = (state) => {
     return {
-        products: state.products.filter( product => product.type == 'Women Clothes' )
+        products: state.cartReducer.products.filter( product => product.type == 'Women Clothes' )
     }
 }
 

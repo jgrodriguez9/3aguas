@@ -1,85 +1,149 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { connect } from 'react-redux';
-import { userLogin } from '../store/actions/cartActions';
 import TopHeader from '../components/Layouts/TopHeader';
 import Navbar from '../components/Layouts/Navbar';
 import PageBanner from '../components/Common/PageBanner';
 import FacilitySlider from '../components/Common/FacilitySlider';
 import InstagramFeed from '../components/Common/InstagramFeed';
 import Footer from '../components/Layouts/Footer';
+import * as Yup from 'yup';
+import { Field, Formik } from "formik"
+import { useDispatch, useSelector } from 'react-redux';
+import registerCustomer from '../store/actions/securityAction';
 
-class Signup extends Component {
 
-    handleLogin = (e) => {
-        e.preventDefault();
-        this.props.userLogin();
-        Router.push('/');
-    }
+function Signup(){
+    const registerReducer = useSelector((state)=>state.registerReducer)
+    const { loading, user, error } = registerReducer
+    const dispatch = useDispatch()
+    
+    
+    const [initialValues, setInitialValues] = useState({
+        firstname: '',
+        lastname: '',
+        email: '',
+        phone: ''
+    })
 
-    render() {
-        return (
-            <React.Fragment>
-               <TopHeader />
-                <Navbar />
-                <PageBanner 
-                    pageTitle="My Account" 
-                    homePageUrl="/" 
-                    homePageText="Home" 
-                    activePageText="Login" 
-                /> 
+    const shema = Yup.object().shape({
+        firstname: Yup.string()
+          .required('Campo requuerido'),
+        lastname: Yup.string()
+          .required('Campo requuerido'),
+        email: Yup.string()
+           .email("Correo inválido")
+           .required('Campo requuerido'),
+    });
 
-                <section className="signup-area ptb-100">
-                    <div className="container">
-                        <div className="signup-content">
-                            <h2>Create an Account</h2>
+    return (
+        <React.Fragment>
+           <TopHeader />
+            <Navbar />
+            <PageBanner 
+                pageTitle="My Account" 
+                homePageUrl="/" 
+                homePageText="Home" 
+                activePageText="Login" 
+            /> 
 
-                            <form onSubmit={this.handleLogin} className="signup-form">
-                                <div className="form-group">
-                                    <label>First Name</label>
-                                    <input type="text" className="form-control" id="fname" name="fname" />
-                                </div>
+            <section className="signup-area ptb-100">
+                <div className="container">
+                    <div className="signup-content">
+                        <h2>Create an Account</h2>
+                        
+                        <Formik
+                            initialValues={initialValues}
+                            validationSchema={shema}
+                            onSubmit={(values, { setSubmitting,setFieldValue }) => { 
+                                console.log(values)  
+                                dispatch(registerCustomer(JSON.stringify(values)))
+                                console.log(registerReducer)
 
-                                <div className="form-group">
-                                    <label>Last Name</label>
-                                    <input type="text" className="form-control" id="lname" name="lname" />
-                                </div>
+                                if(user){
+                                    Router.push("/login")
+                                }
 
-                                <div className="form-group">
-                                    <label>Email</label>
-                                    <input type="email" className="form-control" id="name" name="name" />
-                                </div>
+                            }}
+                        >{
+                            ({
+                                values,
+                                errors,
+                                touched,
+                                handleChange,
+                                handleBlur,
+                                handleSubmit,
+                                isSubmitting,
+                                setFieldValue,
+                                setFieldError
+                            }) => (
+                                <form onSubmit={handleSubmit} className="signup-form">
+                                    <div className="form-group">
+                                        <label>First Name</label>
+                                        <Field 
+                                            type="text"
+                                            className="form-control"
+                                            id="fname" 
+                                            name="firstname"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Last Name</label>
+                                        <Field 
+                                            type="text"
+                                            className="form-control"
+                                            id="lname" 
+                                            name="lastname"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Email</label>
+                                        <Field 
+                                            type="email"
+                                            className="form-control" 
+                                            name="email"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Phone</label>
+                                        <Field 
+                                            type="text"
+                                            className="form-control" 
+                                            name="phone"
+                                        />
+                                    </div>
 
-                                <div className="form-group">
-                                    <label>Password</label>
-                                    <input type="password" className="form-control" id="password" name="password" />
-                                </div>
+                                    <button type="submit" className="default-btn" disabled={registerReducer.loading}>
+                                        {
+                                            registerReducer.loading ? 
+                                            <div className="spinner-border text-white" role="status" style={{height: '1rem', width: '1rem'}}>
+                                                <span className="sr-only">Loading...</span>
+                                            </div> :
+                                            'Signup'
+                                        }
+                                        
+                                    </button>
 
-                                <button type="submit" className="default-btn">Signup</button>
-                                
-                                <div className="text-center">
+                                    <div className="text-center">
                                     <Link href="/">
                                         <a className="return-store">or Return to Store</a>
                                     </Link>
                                 </div>
-                            </form>
-                        </div>
+
+                                </form>
+                            )
+                        }
+
+                        </Formik>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                <FacilitySlider />
-                <InstagramFeed />
-                <Footer />
-            </React.Fragment>
-        );
-    }
+            <FacilitySlider />
+            <InstagramFeed />
+            <Footer />
+        </React.Fragment>
+    );
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        userLogin: () => {dispatch(userLogin())}
-    }
-}
-
-export default connect(null, mapDispatchToProps)(Signup)
+export default Signup

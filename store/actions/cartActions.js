@@ -11,26 +11,7 @@ import {
     USRER_LOGOUT
 } from './action-types/cart-actions'
 
-//CHECK_USRER_LOGIN
-export const checkUserLogin = () => {
-    return {
-        type: CHECK_USRER_LOGIN
-    }
-}
 
-// USRER_LOGOUT
-export const userLogout = () => {
-    return {
-        type: USRER_LOGOUT
-    }
-}
-
-// USRER_LOGIN
-export const userLogin = () => {
-    return {
-        type: USRER_LOGIN
-    }
-}
 
 //add products
 export const addProducts = () => {

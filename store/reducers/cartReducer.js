@@ -35,54 +35,6 @@ const initState = {
 
 const cartReducer = (state = initState, action) => {
 
-    // User Logout
-    if (action.type === USRER_LOGOUT){
-        cookie.remove('_livani_token_')
-        return{
-            ...state,
-            login: false
-        }
-    }
-
-    // Check if user login
-    if (action.type === CHECK_USRER_LOGIN){
-        const getToken = cookie.get('_livani_token_')
-
-        if (getToken == token){
-            return{
-                ...state,
-                login: true
-            }
-        } else {
-            return{
-                ...state,
-                login: false
-            }
-        }
-    }
-
-    // User Login
-    if(action.type === USRER_LOGIN){
-        cookie.set('_livani_token_', token);
-
-        const getToken = cookie.get('_livani_token_')
-
-        // console.log('token', getToken)
-
-        if (getToken == token){
-            return{
-                ...state,
-                login: true
-            }
-        } else {
-            return{
-                ...state,
-                login: false
-            }
-        }
-        
-    }
-
     if(action.type === ADD_PRODUCTS){
         let productsArray = [];
         // dbOrderRef.get()
@@ -234,10 +186,12 @@ const cartReducer = (state = initState, action) => {
     }
 }
 
-export const initStore = (initialState = initState) => {
+export default cartReducer
+
+/* export const initStore = (initialState = initState) => {
     return createStore(
         cartReducer,
         initialState,
         composeWithDevTools(applyMiddleware(thunk))
     )
-}
+} */

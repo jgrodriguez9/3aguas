@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { connect } from 'react-redux';
-import { userLogout } from '../../store/actions/cartActions';
 import WishlistModal from '../Modals/WishlistModal';
+import { userLogout } from '../../store/actions/securityAction';
 
 class TopHeader extends Component {
 
@@ -33,52 +33,6 @@ class TopHeader extends Component {
                                 <ul className="header-contact-info">
                                     <li>Welcome to Livani</li>
                                     <li>Call: +1-541-754-3010</li>
-
-                                    <li>
-                                        <div className="dropdown language-switcher d-inline-block">
-                                            <button className="dropdown-toggle" type="button">
-                                                <img src={require("../../images/us-flag.jpg")} alt="image" />
-                                                <span>Eng <i className='bx bx-chevron-down'></i></span>
-                                            </button>
-
-                                            <div className="dropdown-menu">
-                                                <Link href="#">
-                                                    <a className="dropdown-item d-flex align-items-center">
-                                                        <img src={require("../../images/germany-flag.jpg")} className="shadow-sm" alt="flag" />
-                                                        <span>Ger</span>
-                                                    </a>
-                                                </Link>
-
-                                                <Link href="#">
-                                                    <a className="dropdown-item d-flex align-items-center">
-                                                        <img src={require("../../images/france-flag.jpg")} className="shadow-sm" alt="flag" />
-                                                        <span>Fre</span>
-                                                    </a>
-                                                </Link>
-
-                                                <Link href="#">
-                                                    <a className="dropdown-item d-flex align-items-center">
-                                                        <img src={require("../../images/spain-flag.jpg")} className="shadow-sm" alt="flag" />
-                                                        <span>Spa</span>
-                                                    </a>
-                                                </Link>
-
-                                                <Link href="#">
-                                                    <a className="dropdown-item d-flex align-items-center">
-                                                        <img src={require("../../images/russia-flag.jpg")} className="shadow-sm" alt="flag" />
-                                                        <span>Rus</span>
-                                                    </a>
-                                                </Link>
-
-                                                <Link href="#">
-                                                    <a className="dropdown-item d-flex align-items-center">
-                                                        <img src={require("../../images/italy-flag.jpg")} className="shadow-sm" alt="flag" />
-                                                        <span>Ita</span>
-                                                    </a>
-                                                </Link>
-                                            </div>
-                                        </div>
-                                    </li>
                                 </ul>
                             </div>
 

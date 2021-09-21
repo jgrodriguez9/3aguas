@@ -58,6 +58,7 @@ Default CSS
 $font-family1: 'Lato';
 $font-family2: 'Cabin';
 $main-color: #f53f85;
+$disabled-color: #fc85b2;
 $optional-color: #777777;
 $black-color: #000000;
 $white-color: #ffffff;
@@ -158,6 +159,12 @@ p {
         background-color: transparent;
         color: $black-color;
         border-color: $black-color;
+    }
+    &:disabled{
+        background-color: $disabled-color;
+        border-color: $disabled-color;
+        color: #fff;
+        cursor: not-allowed;
     }
 }
 .optional-btn {
