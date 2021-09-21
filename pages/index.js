@@ -17,7 +17,6 @@ import BestSellingProducts from '../components/HomeOne/BestSellingProducts';
 const Index = ({ products }) => {
     return (
         <React.Fragment>
-            <TopHeader />
             <Navbar />
             <MainBanner />
             <CategoriesBanner />
