@@ -33,12 +33,12 @@ const Index = ({ products }) => {
             <Footer />
         </React.Fragment>
     );
-}
+};
 
 const mapStateToProps = (state) => {
     return {
-        products: state.cartReducer.products.filter( product => product.type == 'Women Clothes' )
+        products: state.productReducer.products.filter( product => product.type == 'Women Clothes' )
     }
-}
+};
 
 export default connect(mapStateToProps)(Index);

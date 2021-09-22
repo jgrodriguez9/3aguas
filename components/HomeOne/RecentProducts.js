@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import SingleProduct from '../Common/SingleProduct';
 import { addToCart } from '../../store/actions/cartActions';
+
 class RecentProducts extends Component {
     
     state = {
@@ -82,7 +83,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addToCart: (id) => { dispatch(addToCart(id)) }
     }
-}
+};
 
 export default connect(
     null,

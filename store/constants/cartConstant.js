@@ -9,6 +9,3 @@ export const ORDER_FORM = 'ORDER_FORM';
 export const CHECKOUT_CHARGE = 'CHECKOUT_CHARGE';
 export const RESET_CART = 'RESET_CART';
 export const ADD_PRODUCTS = 'ADD_PRODUCTS';
-export const USRER_LOGIN = 'USRER_LOGIN';
-export const CHECK_USRER_LOGIN = 'CHECK_USRER_LOGIN';
-export const USRER_LOGOUT = 'USRER_LOGOUT';

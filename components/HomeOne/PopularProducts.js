@@ -23,7 +23,7 @@ class PopularProducts extends Component {
         this.setState({
             QuickViewModal: !this.state.QuickViewModal
         });
-    }
+    };
 
     handleAddToCart = (id) => {
         this.props.addToCart(id); 
@@ -35,13 +35,13 @@ class PopularProducts extends Component {
             pauseOnHover: true,
             draggable: true
         });
-    }
+    };
 
     passDataToModal = (product) => {
         this.setState({
             modalProduct: product
         });
-    }
+    };
 
     render() {
         return (
@@ -84,7 +84,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addToCart: (id) => { dispatch(addToCart(id)) }
     }
-}
+};
 
 export default connect(
     null,

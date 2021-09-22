@@ -7,17 +7,15 @@ import Layout from '../components/_App/Layout';
 import { addProducts } from '../store/actions/cartActions';
 import { checkUserLogin } from '../store/actions/securityAction';
 import store from '../store/store';
+import {getProductList} from "../store/actions/commerceAction";
 
 
 
 const MyApp = ({Component, pageProps}) => {
     
-
-    
-    // React.useEffect(() => {
-    //     store.dispatch(checkUserLogin())
-    //     store.dispatch(addProducts())
-    // });
+    React.useEffect(() => {
+        store.dispatch(getProductList())
+    });
 
 
     return (
@@ -28,7 +26,7 @@ const MyApp = ({Component, pageProps}) => {
             </Provider>
         </Layout>
     );
-}
+};
 
 MyApp.getInitialProps = async ({ Component, ctx }) => {
     let pageProps = {};
