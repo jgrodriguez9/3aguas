@@ -17,8 +17,7 @@ import {
     ADD_QUANTITY_WITH_NUMBER,
     RESET_CART,
     ADD_PRODUCTS
-} from '../constants/cartConstant'
-import Commerce from "@chec/commerce.js";
+} from '../constants/cartConstant';
 
 const initState = {
     products: [],

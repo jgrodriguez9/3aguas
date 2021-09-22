@@ -4,8 +4,6 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import { ToastContainer } from 'react-toastify';
 import Layout from '../components/_App/Layout';
-import { addProducts } from '../store/actions/cartActions';
-import { checkUserLogin } from '../store/actions/securityAction';
 import store from '../store/store';
 import {getProductList} from "../store/actions/commerceAction";
 

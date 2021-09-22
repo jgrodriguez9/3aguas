@@ -50,8 +50,8 @@ class RecentProducts extends Component {
                     <ToastContainer />
                     <div className="container">
                         <div className="section-title">
-                            <span className="sub-title">See Our Collection</span>
-                            <h2>Recent Products</h2>
+                            <span className="sub-title">Ver nuestra colección</span>
+                            <h2>Productos Recientes</h2>
                         </div>
 
                         <div className="row">
