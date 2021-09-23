@@ -3,7 +3,7 @@ import QuickViewModal from '../Modals/QuickViewModal';
 import { ToastContainer, toast } from 'react-toastify';
 import SingleProduct from '../Common/SingleProduct';
 
-export default function  RecentProducts  ({products})  {
+export default function RecentProducts({products})  {
     const [quickViewModal, setQuickViewModal] = useState(false);
     const [modalProduct, setModalProduct] = useState({});
 
