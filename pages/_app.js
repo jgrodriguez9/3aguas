@@ -1,44 +1,31 @@
 import '../styles.scss';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import { ToastContainer } from 'react-toastify';
 import Layout from '../components/_App/Layout';
 import { addProducts } from '../store/actions/cartActions';
-import { checkUserLogin } from '../store/actions/securityAction';
+import { checkUserLogin, setCustomer } from '../store/actions/securityAction';
 import store from '../store/store';
-
-
+import RouteGuard from '../components/security/RouteGuard';
 
 const MyApp = ({Component, pageProps}) => {
     
-
-    
-    // React.useEffect(() => {
-    //     store.dispatch(checkUserLogin())
-    //     store.dispatch(addProducts())
-    // });
-
+    useEffect(()=>{
+        store.dispatch(setCustomer())
+    })
 
     return (
         <Layout>
             <ToastContainer />
             <Provider store={store}>
-                <Component {...pageProps} />
+                <RouteGuard>
+                    <Component {...pageProps} />
+                </RouteGuard>
             </Provider>
         </Layout>
     );
 }
 
-MyApp.getInitialProps = async ({ Component, ctx }) => {
-    let pageProps = {};
-    if(Component.getInitialProps){
-        pageProps = await Component.getInitialProps(ctx)
-    }
-    return { pageProps }
-};
-
 const makeStore = () => store;
-
-
 export default withRedux(makeStore)(MyApp)

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import TopHeader from '../components/Layouts/TopHeader';
 import Navbar from '../components/Layouts/Navbar';
@@ -10,13 +9,20 @@ import InstagramFeed from '../components/Common/InstagramFeed';
 import Footer from '../components/Layouts/Footer';
 import * as Yup from 'yup';
 import { Field, Formik } from "formik"
-import { userLogin } from '../store/actions/securityAction';
+import { setCustomer, userLogin } from '../store/actions/securityAction';
+import { useEffect } from 'react';
+import LoginAnimation from '../components/Loader/LoginAnimation';
+import commerce from '../server/config/commerce';
 
 function Login(){
+    const router = useRouter()
+    const { token } = router.query
     const securityReducer = useSelector((state)=>state.securityReducer)
     const { loading, login, user, error } = securityReducer
     const dispatch = useDispatch()
     const [sendEmail, setSendEmail] = useState(false)
+    const [messageAlert, setMessageAlert] = useState(null)
+    const [validToken, setValidToken] = useState(true)
 
     const [initialValues, setInitialValues] = useState({
         email: ''
@@ -27,6 +33,25 @@ function Login(){
            .email("Correo inválido")
            .required('Campo requerido'),
     });
+
+
+    useEffect(()=>{
+        //checamos que no venga el tokenpor la url
+        if(token){
+            setValidToken(true)
+            commerce.customer.getToken(token)
+            .then(jwt=>{
+                dispatch(setCustomer())
+                router.push("/my-account")
+            })
+            .catch(error=>{
+                console.log(error)
+                setMessageAlert("Este token no se encuentra o no es válido")
+            })
+        }else{
+
+        }
+    }, [])
 
     return(
         <>
@@ -42,86 +67,91 @@ function Login(){
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12 col-md-12">
-                            <div className="login-content">
-                                <h2>Login</h2>
-                                {
-                                    user && 
-                                    <div className="alert alert-success" role="alert">
-                                        If that email address exists in our system, we've just sent you a link to continue logging in!
+                            {
+                                messageAlert ?
+                                <div className="text-center">
+                                    <div className="alert alert-info" role="alert">
+                                        {messageAlert}
                                     </div>
-                                }
-                                {
-                                    error &&
-                                    <div className="alert alert-danger" role="alert">
-                                        {error}
-                                    </div>
-                                }
+                                    <button type="button" className="default-btn" 
+                                    onClick={e=>{
+                                        setMessageAlert(null)
+                                        setValidToken(false)
+                                    }}>
+                                        Return to Login
+                                    </button>
+                                </div>
+                                :
+                                (token && validToken) ? 
+                                <div className="procesing-login">
+                                    <LoginAnimation />
+                                </div> :
+                                <div className="login-content">
+                                    <h2>Login</h2>
+                                    {
+                                        user && 
+                                        <div className="alert alert-success" role="alert">
+                                            If that email address exists in our system, we've just sent you a link to continue logging in!
+                                        </div>
+                                    }
+                                    {
+                                        error &&
+                                        <div className="alert alert-danger" role="alert">
+                                            {error}
+                                        </div>
+                                    }
 
-                                <Formik
-                                    initialValues={initialValues}
-                                    validationSchema={shema}
-                                    onSubmit={(values, { setSubmitting,setFieldValue }) => { 
-                                        console.log(values)  
-                                        dispatch(userLogin(values.email))
+                                    <Formik
+                                        initialValues={initialValues}
+                                        validationSchema={shema}
+                                        onSubmit={(values, { setSubmitting,setFieldValue }) => {                                             
+                                            dispatch(userLogin(values.email))                                            
+                                        }}
+                                    >{
+                                        ({
+                                            values,
+                                            errors,
+                                            touched,
+                                            handleChange,
+                                            handleBlur,
+                                            handleSubmit,
+                                            isSubmitting,
+                                            setFieldValue,
+                                            setFieldError
+                                        }) => (
+                                            <form onSubmit={handleSubmit} className="login-form">
+                                                <div className="form-group">
+                                                    <Field 
+                                                        type="email"
+                                                        className="form-control" 
+                                                        name="email"
+                                                        placeholder="demo@example.com"
+                                                    />
+                                                    {
+                                                        errors.email &&
+                                                        <div className="invalid-feedback d-block">{errors.email}</div>
+                                                    }
+                                                </div>
+                                                
+                                                
+                                                <button type="submit" className="default-btn" disabled={loading}>
+                                                    {
+                                                        loading ? 
+                                                        <div className="spinner-border text-white" role="status" style={{height: '1rem', width: '1rem'}}>
+                                                            <span className="sr-only">Loading...</span>
+                                                        </div> :
+                                                        'Get magic Link'
+                                                    }                                                
+                                                </button>
 
-                                    }}
-                                >{
-                                    ({
-                                        values,
-                                        errors,
-                                        touched,
-                                        handleChange,
-                                        handleBlur,
-                                        handleSubmit,
-                                        isSubmitting,
-                                        setFieldValue,
-                                        setFieldError
-                                    }) => (
-                                        <form onSubmit={handleSubmit} className="login-form">
-                                            <div className="form-group">
-                                                <Field 
-                                                    type="email"
-                                                    className="form-control" 
-                                                    name="email"
-                                                    placeholder="demo@example.com"
-                                                />
-                                                {
-                                                    errors.email &&
-                                                    <div className="invalid-feedback d-block">{errors.email}</div>
-                                                }
-                                            </div>
-                                            
-                                            
-                                            <button type="submit" className="default-btn" disabled={loading}>
-                                                {
-                                                    loading ? 
-                                                    <div className="spinner-border text-white" role="status" style={{height: '1rem', width: '1rem'}}>
-                                                        <span className="sr-only">Loading...</span>
-                                                    </div> :
-                                                    'Get magic Link'
-                                                }                                                
-                                            </button>
+                                            </form>
+                                        )
+                                    }
 
-                                        </form>
-                                    )
-                                }
-
-                                </Formik>
-                            </div>
+                                    </Formik>
+                                </div>
+                            }
                         </div>
-
-                        {/* <div className="col-lg-6 col-md-6">
-                            <div className="new-customer-content">
-                                <h2>New Customer</h2>
-
-                                <span>Create an Account</span>
-                                <p>Sign up for a free account at our store. Registration is quick and easy. It allows you to be able to order from our shop. To start shopping click register.</p>
-                
-                                <Link href="/signup">
-                                    <a className="optional-btn">Create an Account</a>
-                                </Link>
-                            </div>
-                        </div> */}
                     </div>
                 </div>
             </section>
@@ -133,11 +163,3 @@ function Login(){
 }
 
 export default Login
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         userLogin: () => {dispatch(userLogin())}
-//     }
-// }
-
-// export default connect(null, mapDispatchToProps)(Login)

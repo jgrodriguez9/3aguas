@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from '../constants/securityConstant'
+import { CLEAR_CUSTOMER, CUSTOMER_FAILURE, CUSTOMER_REQUEST, CUSTOMER_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from '../constants/securityConstant'
 import { USRER_LOGIN, CHECK_USRER_LOGIN, USRER_LOGOUT } from './action-types/cart-actions'
 import cookie from 'js-cookie';
 import Post from '../../server/request/post';
@@ -26,30 +26,19 @@ export const failure = (error) =>{
 
 // USRER_LOGIN
 export const userLogin = (username) => {
-    console.log(username)
+    
     return (dispatch) => {
         dispatch(request())
 
         //make http request
         commerce.customer.login(username, `${window.location.origin}/login?token={token}`)
-        .then(token => {
-            console.log(token)
+        .then(token => {    
             dispatch(success(username)); 
         })
         .catch(error=>{
             dispatch(failure(error));
         })
     } 
-
-
-
-    // cookie.set('_shop_token_', token);
-    // const getToken = cookie.get('_shop_token_')
-
-    // console.log('token', getToken)
-    // return {
-    //     type: USRER_LOGIN
-    // }
 }
 
 
@@ -65,11 +54,9 @@ export const checkUserLogin = () => {
 }
 
 // USRER_LOGOUT
-export const userLogout = () => {
-    cookie.remove('_shop_token_')
-    return {
-        type: USRER_LOGOUT
-    }
+export const userLogout = () => (dispatch) =>{
+    commerce.customer.logout();
+    dispatch({ type: CLEAR_CUSTOMER });
 }
 
 
@@ -94,7 +81,7 @@ export const registerFailure = (error) =>{
     }
 }
 
-const registerCustomer = (data) =>{
+export const registerCustomer = (data) =>{
     return (dispatch) =>{
         dispatch(registerRequest())
         Post({url: CUSTOMER_REGISTER, data: data})
@@ -107,4 +94,25 @@ const registerCustomer = (data) =>{
     }
 }
 
-export default registerCustomer
+//customer
+export const setCustomer = () =>{    
+
+    const isLoggedIn = commerce.customer.isLoggedIn();
+    if (!isLoggedIn || isLoggedIn === false) {
+        return (dispatch) =>{
+            dispatch({ type: CLEAR_CUSTOMER });
+        }
+    }
+
+
+    return (dispatch) =>{
+        dispatch({type: CUSTOMER_REQUEST})
+        commerce.customer.about()
+        .then((customer) => {
+            dispatch({type: CUSTOMER_SUCCESS, payload: customer})
+        })
+        .catch(error=>{
+            dispatch({type: CUSTOMER_FAILURE, payload: error})
+        })
+    }
+}

@@ -10,7 +10,7 @@ import Footer from '../components/Layouts/Footer';
 import * as Yup from 'yup';
 import { Field, Formik } from "formik"
 import { useDispatch, useSelector } from 'react-redux';
-import registerCustomer from '../store/actions/securityAction';
+import { registerCustomer } from '../store/actions/securityAction';
 
 
 function Signup(){
@@ -56,10 +56,7 @@ function Signup(){
                             initialValues={initialValues}
                             validationSchema={shema}
                             onSubmit={(values, { setSubmitting,setFieldValue }) => { 
-                                console.log(values)  
                                 dispatch(registerCustomer(JSON.stringify(values)))
-                                console.log(registerReducer)
-
                                 if(user){
                                     Router.push("/login")
                                 }
