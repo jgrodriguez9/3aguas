@@ -1,5 +1,5 @@
 import { CLEAR_CUSTOMER, CUSTOMER_FAILURE, CUSTOMER_REQUEST, CUSTOMER_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from '../constants/securityConstant'
-import { USRER_LOGIN, CHECK_USRER_LOGIN, USRER_LOGOUT } from './action-types/cart-actions'
+import { USRER_LOGIN, CHECK_USRER_LOGIN, USRER_LOGOUT } from '../constants/securityConstant'
 import cookie from 'js-cookie';
 import Post from '../../server/request/post';
 import { CUSTOMER_REGISTER } from '../../server/routes/customer';
@@ -10,19 +10,29 @@ export const request = () =>{
     return{
         type: LOGIN_REQUEST
     }
-}
+import cookie from 'js-cookie';
+import Post from '../../server/request/post';
+import { CUSTOMER_REGISTER } from '../../server/routes/customer';
+import commerce from '../../server/config/commerce';
+
+//ACTIONS LOGIN
+export const request = () =>{
+    return{
+        type: LOGIN_REQUEST
+    }
+};
 export const success = (user) =>{
     return{
         type: LOGIN_SUCCESS,
         payload: user
     }
-}
+};
 export const failure = (error) =>{
     return{
         type: LOGIN_FAILURE,
         payload: error
     }
-}
+};
 
 // USRER_LOGIN
 export const userLogin = (username) => {

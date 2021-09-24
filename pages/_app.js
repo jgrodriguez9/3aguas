@@ -8,13 +8,22 @@ import { addProducts } from '../store/actions/cartActions';
 import { checkUserLogin, setCustomer } from '../store/actions/securityAction';
 import store from '../store/store';
 import RouteGuard from '../components/security/RouteGuard';
+import {getProductList} from "../store/actions/commerceAction";
 
 const MyApp = ({Component, pageProps}) => {
     
     useEffect(()=>{
         store.dispatch(setCustomer())
     })
+    React.useEffect(() => {
+        store.dispatch(getProductList())
+    });
 
+
+    return (
+        <Layout>
+            <ToastContainer />
+            <Provider store={store}>
     return (
         <Layout>
             <ToastContainer />
@@ -25,7 +34,7 @@ const MyApp = ({Component, pageProps}) => {
             </Provider>
         </Layout>
     );
-}
+};
 
 const makeStore = () => store;
 export default withRedux(makeStore)(MyApp)

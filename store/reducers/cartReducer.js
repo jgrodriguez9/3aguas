@@ -16,14 +16,8 @@ import {
     ADD_SHIPPING,
     ADD_QUANTITY_WITH_NUMBER,
     RESET_CART,
-    ADD_PRODUCTS,
-    USRER_LOGIN,
-    CHECK_USRER_LOGIN,
-    USRER_LOGOUT
-} from '../actions/action-types/cart-actions'
-import Commerce from "@chec/commerce.js";
-
-const token = '76483461103103918uhkjdkjc';
+    ADD_PRODUCTS
+} from '../constants/cartConstant';
 
 const initState = {
     products: [],
@@ -45,16 +39,7 @@ const cartReducer = (state = initState, action) => {
         //         productsArray.push(productsObj)
         //     });
         // });
-        const commerce = new Commerce(keys.commerceJsKey);
 
-        commerce.products.list().then((product) => {
-            product.data.forEach( p => {
-                productsArray.push(p);
-                console.log('www', p)
-                }
-            );
-        });
-        
         return{
             ...state,
             products: data
@@ -187,11 +172,3 @@ const cartReducer = (state = initState, action) => {
 }
 
 export default cartReducer
-
-/* export const initStore = (initialState = initState) => {
-    return createStore(
-        cartReducer,
-        initialState,
-        composeWithDevTools(applyMiddleware(thunk))
-    )
-} */
