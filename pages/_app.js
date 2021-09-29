@@ -15,15 +15,7 @@ const MyApp = ({Component, pageProps}) => {
     useEffect(()=>{
         store.dispatch(setCustomer())
     })
-    React.useEffect(() => {
-        store.dispatch(getProductList())
-    });
 
-
-    return (
-        <Layout>
-            <ToastContainer />
-            <Provider store={store}>
     return (
         <Layout>
             <ToastContainer />
@@ -34,6 +26,7 @@ const MyApp = ({Component, pageProps}) => {
             </Provider>
         </Layout>
     );
+    
 };
 
 const makeStore = () => store;

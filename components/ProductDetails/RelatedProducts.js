@@ -121,7 +121,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addToCart: (id) => { dispatch(addToCart(id)) }
+        //addToCart: (id) => { dispatch(addToCart(id)) }
+        addToCart: (id) => { }
     }
 }
 

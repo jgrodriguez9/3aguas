@@ -28,9 +28,10 @@ export const getProductList = () => {
         commerce.products.list()
             .then((productResult) => {
                 dispatch(successProducts(productResult));
-            }).catch(error => {
+            })
+            .catch(error => {
             dispatch(failure(PRODUCT_LIST_REQUEST_FAILURE, error));
-        });
+            });
     }
 };
 export const successProducts = (productsResult) => {

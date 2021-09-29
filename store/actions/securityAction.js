@@ -10,16 +10,6 @@ export const request = () =>{
     return{
         type: LOGIN_REQUEST
     }
-import cookie from 'js-cookie';
-import Post from '../../server/request/post';
-import { CUSTOMER_REGISTER } from '../../server/routes/customer';
-import commerce from '../../server/config/commerce';
-
-//ACTIONS LOGIN
-export const request = () =>{
-    return{
-        type: LOGIN_REQUEST
-    }
 };
 export const success = (user) =>{
     return{

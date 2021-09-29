@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from "next/head";
 import GoTop from '../Shared/GoTop';
+import { ToastContainer } from 'react-toastify';
 
 const Layout = ({children}) => {
     const [loader, setLoader] = React.useState(true);
@@ -11,6 +12,7 @@ const Layout = ({children}) => {
 
     return(
         <React.Fragment>
+            <ToastContainer />
             <Head>
                 <title>3 Aguas</title>
                 <meta name="description" content="3 Aguas - Tienda Playa" />

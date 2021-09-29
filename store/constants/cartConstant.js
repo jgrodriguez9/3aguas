@@ -9,3 +9,5 @@ export const ORDER_FORM = 'ORDER_FORM';
 export const CHECKOUT_CHARGE = 'CHECKOUT_CHARGE';
 export const RESET_CART = 'RESET_CART';
 export const ADD_PRODUCTS = 'ADD_PRODUCTS';
+export const PROCESS_CART = 'PROCESS_CART'
+export const FAIL_PROCESS_CART = 'FAIL_PROCESS_CART'

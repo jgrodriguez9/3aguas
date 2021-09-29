@@ -1,19 +1,22 @@
 import React, {useState} from 'react';
 import QuickViewModal from '../Modals/QuickViewModal';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import SingleProduct from '../Common/SingleProduct';
+import { useDispatch } from 'react-redux';
+import { addQuantityWithNumber } from '../../store/actions/cartActions';
 
-export default function RecentProducts({products})  {
+function RecentProducts({products})  {
     const [quickViewModal, setQuickViewModal] = useState(false);
     const [modalProduct, setModalProduct] = useState({});
+    const dispatch = useDispatch()
 
     const toggleModal = () => {
         setQuickViewModal(!quickViewModal);
     };
 
     const handleAddToCart = (id) => {
-        // addToCart(id);
-        toast.success('Added to the cart', {
+        dispatch(addQuantityWithNumber(id, 1))
+        toast.success('Agregado al carrito', {
             position: "bottom-left",
             autoClose: 5000,
             hideProgressBar: false,
@@ -31,7 +34,6 @@ export default function RecentProducts({products})  {
     return (
         <>
             <section className="products-area pb-70">
-                <ToastContainer />
                 <div className="container">
                     <div className="section-title">
                         <span className="sub-title">Ver nuestra colección</span>
@@ -39,11 +41,11 @@ export default function RecentProducts({products})  {
                     </div>
 
                     <div className="row">
-                        {!!products.length && products.map((product, idx) => (
+                        {!!products.length && products.map((product, idx) => (                            
                             <SingleProduct
                                 styleCls="col-lg-4 col-sm-6"
-                                product={product}
                                 key={idx}
+                                product={product}
                                 onHandleAddToCart={handleAddToCart}
                                 onhandleModalProduct={passDataToModal}
                                 ontoggleModal={toggleModal}
@@ -61,5 +63,5 @@ export default function RecentProducts({products})  {
     );
 
 }
-
+export default RecentProducts
 

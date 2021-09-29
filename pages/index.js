@@ -13,32 +13,36 @@ import InstagramFeed from '../components/Common/InstagramFeed';
 import Footer from '../components/Layouts/Footer';
 import PopularProducts from '../components/HomeOne/PopularProducts';
 import BestSellingProducts from '../components/HomeOne/BestSellingProducts';
+import { getProducts } from '../server/api/products';
 
-const Index = ({ products }) => {
-
+function Index({products}){
     return (
-        <React.Fragment>
+        <>
             <TopHeader />
             <Navbar />
             <MainBanner />
             <CategoriesBanner />
             <RecentProducts products={products} />
             <OfferStyleOne />
-            <PopularProducts products={products} />
+            {/* <PopularProducts products={products} /> */}
             <FacilitySlider />
-            <BestSellingProducts products={products} />
+            {/* <BestSellingProducts products={products} /> */}
             <Partner />
             <RecentBlogPost />
             <InstagramFeed />
             <Footer />
-        </React.Fragment>
-    );
-};
+        </>
+    )
 
-const mapStateToProps = (state) => {
+}
+
+export async function getStaticProps(context) {
+    let products = await getProducts();
     return {
-        products: state.productReducer.products.filter( product => product.type == 'Women Clothes' )
-    }
-};
-
-export default connect(mapStateToProps)(Index);
+      props: {
+        products: products.data
+      },
+      unstable_revalidate: 10
+    };
+  }
+export default Index;
