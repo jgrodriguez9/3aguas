@@ -1,24 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useForm from './userForm';
 import OrderSummary from './OrderSummary';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkoutGenerateToken, getShippingOptions } from '../../store/actions/checkoutActions';
+import { getAllCountriesToShipping, getAllRegionsToShippingForACountry } from '../../server/api/checkout';
 
-function CheckoutContent({total, shipping}) {
+function CheckoutContent() {
+    const { cart, checkout, shippingOptions } = useSelector((state)=>state.cartReducer)
+    const dispatch = useDispatch()
+    const [countries, setCountries] = useState({})
+    const [regions, setRegions] = useState({})
     function handleSubmit() {
         console.log("Form submitted.");
     }
 
-    let totalAmount = (total + shipping).toFixed(2)
-    
     const stateSchema = {
+        country: {value: "MX", error: ""},
         firstName: {value: "", error: ""},
         lastName: {value: "", error: ""},
         address: {value: "", error: ""},
         city: {value: "", error: ""},
-        state: {value: "", error: ""},
+        state: {value: "ROO", error: ""},
         zip: {value: "", error: ""},
         email: {value: "", error: ""},
-        phone: {value: "", error: ""}
+        phone: {value: "", error: ""},
+        fullName: {value: "", error: ""},
+        shippingmethod: {value: "", error: ""}
     };
+
+    
+    
+    useEffect(()=>{
+        //generate token checkout
+        if(cart.id){
+
+            (async () => {
+                let data = await dispatch(checkoutGenerateToken(cart.id))
+
+                //get cpuntries donde se puede enviar
+                getAllCountriesShipping(data)
+                getAllRegionsShipping(data)
+                
+                //get shipping methods
+                console.log('get shipping methods')
+                dispatch(getShippingOptions(data.id, stateSchema.country.value))
+              })()
+
+            
+        }
+    },[])
+    //console.log(checkout)
+
+    const getAllCountriesShipping = (checkout) => {
+        getAllCountriesToShipping(checkout.id)
+        .then(response=>{
+            setCountries(response.data)
+        })
+        .catch(error=>{
+            console.log(error)
+        })
+    }
+    const getAllRegionsShipping = (checkout) => {
+        getAllRegionsToShippingForACountry(checkout.id, stateSchema.country.value)
+        .then(response=>{
+            //console.log(response)
+            setRegions(response.data)
+        })
+        .catch(error=>{
+            console.log(error)
+        })
+    }
+    
+    
+    
 
     const validationStateSchema = {
         firstName: {
@@ -37,10 +92,31 @@ function CheckoutContent({total, shipping}) {
             }
         },
 
+        fullName: {
+            required: true,
+            validator: {
+                error: "Invalid address format."
+            }
+        },
+
         address: {
             required: true,
             validator: {
                 error: "Invalid address format."
+            }
+        },
+
+        country: {
+            required: true,
+            validator: {
+                error: "Invalid last name format."
+            }
+        },
+
+        shippingmethod: {
+            required: true,
+            validator: {
+                error: "Invalid last name format."
             }
         },
 
@@ -95,40 +171,14 @@ function CheckoutContent({total, shipping}) {
     };
     return (
         <section className="checkout-area ptb-100">
-            <div className="container">
-                <div className="row">
-                    <div className="col-lg-12 col-md-12">
-                        <div className="user-actions">
-                            <i className="icofont-ui-file"></i>
-                            <span>Returning customer? <a href="#">Click here to login!</a></span>
-                        </div>
-                    </div>
-                </div>
+            <div className="container">           
 
                 <form onSubmit={handleOnSubmit}>
                     <div className="row">
                         <div className="col-lg-6 col-md-12">
                             <div className="billing-details">
-                            <h3 className="title">Billing Details</h3>
-
-                            <div className="row">
-                                <div className="col-lg-12 col-md-12">
-                                    <div className="form-group">
-										<label>Country <span className="required">*</span></label>
-										
-                                        <div className="select-box">
-											<select className="form-control">
-												<option value="5">United Arab Emirates</option>
-												<option value="1">China</option>
-												<option value="2">United Kingdom</option>
-												<option value="0">Germany</option>
-												<option value="3">France</option>
-												<option value="4">Japan</option>
-											</select>
-										</div>
-                                    </div>
-                                </div>
-
+                                <h3 className="title">Customer</h3>
+                                <div className="row">
                                     <div className="col-lg-6 col-md-6">
                                         <div className="form-group">
                                             <label>First Name <span className="required">*</span></label>
@@ -154,69 +204,6 @@ function CheckoutContent({total, shipping}) {
                                                 value={state.lastName.value}
                                             />
                                             {state.lastName.error && <p style={errorStyle}>{state.lastName.error}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="col-lg-12 col-md-12">
-                                        <div className="form-group">
-                                            <label>Company Name</label>
-                                            <input type="text" className="form-control" />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-lg-12 col-md-6">
-                                        <div className="form-group">
-                                            <label>Address <span className="required">*</span></label>
-                                            <input 
-                                                type="text" 
-                                                name="address"
-                                                className="form-control" 
-                                                onChange={handleOnChange}
-                                                value={state.address.value}
-                                            />
-                                            {state.address.error && <p style={errorStyle}>{state.address.error}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="col-lg-12 col-md-6">
-                                        <div className="form-group">
-                                            <label>Town / City <span className="required">*</span></label>
-                                            <input 
-                                                type="text" 
-                                                name="city"
-                                                className="form-control" 
-                                                onChange={handleOnChange}
-                                                value={state.city.value}
-                                            />
-                                            {state.city.error && <p style={errorStyle}>{state.city.error}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="col-lg-6 col-md-6">
-                                        <div className="form-group">
-                                            <label>State / County <span className="required">*</span></label>
-                                            <input 
-                                                type="text" 
-                                                name="state"
-                                                className="form-control" 
-                                                onChange={handleOnChange}
-                                                value={state.state.value}
-                                            />
-                                            {state.state.error && <p style={errorStyle}>{state.state.error}</p>}
-                                        </div>
-                                    </div>
-
-                                    <div className="col-lg-6 col-md-6">
-                                        <div className="form-group">
-                                            <label>Postcode / Zip <span className="required">*</span></label>
-                                            <input 
-                                                type="text" 
-                                                name="zip"
-                                                className="form-control"
-                                                onChange={handleOnChange}
-                                                value={state.zip.value}
-                                            />
-                                            {state.zip.error && <p style={errorStyle}>{state.zip.error}</p>}
                                         </div>
                                     </div>
 
@@ -247,7 +234,123 @@ function CheckoutContent({total, shipping}) {
                                             {state.phone.error && <p style={errorStyle}>{state.phone.error}</p>}
                                         </div>
                                     </div>
- 
+                                </div>
+                            </div>
+
+                            <div className="billing-details">
+                                <h3 className="title">Shipping address</h3>
+
+                                <div className="row">
+
+                                    <div className="col-lg-12 col-md-12">
+                                        <div className="form-group">
+                                            <label>Full name <span className="required">*</span></label>
+                                            <input 
+                                                type="text" 
+                                                name="fullName"
+                                                className="form-control" 
+                                                onChange={handleOnChange}
+                                                value={state.fullName.value}
+                                            />
+                                            {state.fullName.error && <p style={errorStyle}>{state.fullName.error}</p>}
+                                        </div>
+                                    </div>
+
+                                    <div className="col-lg-6 col-md-6">
+                                        <div className="form-group">
+                                            <label>Country <span className="required">*</span></label>
+                                            
+                                            <div className="select-box">
+                                                <select className="form-control" onChange={handleOnChange} value={state.country.value} name="country">
+                                                    {
+                                                        Object.entries(countries).map(([code, name]) => (
+                                                            <option value={code} key={code}>{ name }</option>
+                                                        ))
+                                                    }
+                                                </select>
+                                                {state.country.error && <p style={errorStyle}>{state.country.error}</p>}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-lg-6 col-md-6">
+                                        <div className="form-group">
+                                            <label>Town / City <span className="required">*</span></label>
+                                            <input 
+                                                type="text" 
+                                                name="city"
+                                                className="form-control" 
+                                                onChange={handleOnChange}
+                                                value={state.city.value}
+                                            />
+                                            {state.city.error && <p style={errorStyle}>{state.city.error}</p>}
+                                        </div>
+                                    </div>                                    
+
+                                    <div className="col-lg-12 col-md-12">
+                                        <div className="form-group">
+                                            <label>Address <span className="required">*</span></label>
+                                            <input 
+                                                type="text" 
+                                                name="address"
+                                                className="form-control" 
+                                                onChange={handleOnChange}
+                                                value={state.address.value}
+                                            />
+                                            {state.address.error && <p style={errorStyle}>{state.address.error}</p>}
+                                        </div>
+                                    </div>
+
+                                    
+
+                                    <div className="col-lg-6 col-md-6">
+                                        <div className="form-group">
+                                            <label>State / Province / Region <span className="required">*</span></label>
+                                            <div className="select-box">
+                                                <select className="form-control" onChange={handleOnChange} value={state.state.value} name="state">
+                                                    {
+                                                        Object.entries(regions).map(([code, name]) => (
+                                                            <option value={code} key={code}>{ name }</option>
+                                                        ))
+                                                    }
+                                                </select>
+                                                {state.state.error && <p style={errorStyle}>{state.state.error}</p>}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-lg-6 col-md-6">
+                                        <div className="form-group">
+                                            <label>Postcode / Zip <span className="required">*</span></label>
+                                            <input 
+                                                type="text" 
+                                                name="zip"
+                                                className="form-control"
+                                                onChange={handleOnChange}
+                                                value={state.zip.value}
+                                            />
+                                            {state.zip.error && <p style={errorStyle}>{state.zip.error}</p>}
+                                        </div>
+                                    </div>
+
+                                    <div className="col-lg-12 col-md-12">
+                                        <div className="form-group">
+                                            <label>Shipping method <span className="required">*</span></label>
+                                            <div className="select-box">
+                                                <select className="form-control" onChange={handleOnChange} value={state.shippingmethod.value} name="shippingmethod">
+                                                    <option value="">Seleccionar opción</option>
+                                                    {
+                                                        shippingOptions.map(option => (
+                                                            <option key={option.id} value={option.id}>
+                                                            { `${option.description} - $${option.price.formatted_with_code}` }
+                                                            </option>   
+                                                        ))
+                                                    }
+                                                </select>
+                                                {state.shippingmethod.error && <p style={errorStyle}>{state.shippingmethod.error}</p>}
+                                            </div>
+                                        </div>
+                                    </div> 
 
                                     <div className="col-lg-12 col-md-12">
                                         <div className="form-group">

@@ -8,7 +8,8 @@ import { useState } from 'react/cjs/react.development';
 function ShoppingCartModal({active, onClick}){
     const [modal, setModal] = useState(false)
     const cartReducer = useSelector((state)=>state.cartReducer)
-    const { addedItems, total } = cartReducer
+    const { cart } = cartReducer
+
     const dispatch = useDispatch()
 
     const handleRemove = (id) => {
@@ -36,17 +37,17 @@ function ShoppingCartModal({active, onClick}){
                     </button>
 
                     <div className="modal-body">
-                        <h3>My Cart ({addedItems.length})</h3>
+                        <h3>My Cart ({cart.total_unique_items})</h3>
 
                         {
-                            addedItems.length ?
-                            addedItems.map((product, idx) => (
+                            cart.total_unique_items > 0 ?
+                            cart.line_items.map((product, idx) => (
                                 <div className="products-cart-content" key={idx}>
                                     <div className="products-cart">
                                         <div className="products-image">
                                             <Link href="#">
                                                 <a>
-                                                    <img src={product.imageUrl} alt="image" />
+                                                    <img src={product.image ? product.image.url : ''} alt="image" />
                                                 </a>
                                             </Link>
                                         </div>
@@ -54,14 +55,14 @@ function ShoppingCartModal({active, onClick}){
                                         <div className="products-content">
                                             <h3>
                                                 <Link href="#">
-                                                    <a>{product.title}</a>
+                                                    <a>{product.name}</a>
                                                 </Link>
                                             </h3>
 
                                             <div className="products-price">
                                                 <span>{product.quantity}</span>
                                                 <span>x</span>
-                                                <span className="price">${product.newPrice}</span>
+                                                <span className="price">${product.price.raw}</span>
                                             </div>
 
                                             <Link href="#">
@@ -83,13 +84,14 @@ function ShoppingCartModal({active, onClick}){
 
                         <div className="products-cart-subtotal">
                             <span>Subtotal</span>
-                            <span className="subtotal">${total}</span>
+                            <span className="subtotal">{cart.subtotal?.formatted_with_symbol}</span>
                         </div>
 
                         <div className="products-cart-btn">
-                            <Link href="/checkout">
-                                <a className="default-btn">Proceed to Checkout</a>
-                            </Link>
+                            <button className="default-btn" disabled={cart.total_unique_items === 0 ? true : false}>Proceed to Checkout</button>
+                            {/* <Link href="/checkout">
+                                <a className="default-btn"></a>
+                            </Link> */}
                             
                             <Link href="/cart">
                                 <a className="optional-btn">View Shopping Cart</a>

@@ -55,7 +55,7 @@ class Navbar extends Component {
  
     render() {
 
-        const { products } = this.props;
+        const { cart } = this.props;
         const { collapsed } = this.state;
         const classNameOne = collapsed ? 'collapse navbar-collapse' : 'collapse navbar-collapse show';
         const classNameTwo = collapsed ? 'navbar-toggler navbar-toggler-right collapsed' : 'navbar-toggler navbar-toggler-right';
@@ -136,7 +136,7 @@ class Navbar extends Component {
                                                         this.toggleModalCart();
                                                     }}>
                                                         <i className='bx bx-shopping-bag'></i>
-                                                        <span>{products.length}</span>
+                                                        <span>{cart.total_unique_items}</span>
                                                     </a>
                                                 </Link>
                                             </div>
@@ -179,9 +179,9 @@ class Navbar extends Component {
 }
 
 const mapStateToProps = (state)=>{
-    console.log(state)
+    //console.log(state)
     return{
-        products: state.cartReducer.addedItems
+        cart: state.cartReducer.cart
     }
 }
 

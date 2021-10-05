@@ -1,4 +1,5 @@
 import { getProductById } from '../../server/api/products';
+import { addToCart, getCart, removeFromCart, updateItemCart } from '../../server/api/cart';
 import cookie from 'js-cookie';
 import { 
     ADD_TO_CART,
@@ -9,7 +10,8 @@ import {
     RESET_CART,
     ADD_PRODUCTS,
     PROCESS_CART,
-    FAIL_PROCESS_CART
+    FAIL_PROCESS_CART,
+    SET_CART
 } from '../constants/cartConstant'
 
 
@@ -73,28 +75,16 @@ import {
 
 
 // addQuantityWithNumber
-export const addQuantityWithNumber = (id, qty) => {
+export const addQuantityWithNumber = (id, qty, variantData) => {
 
     try {
-        return async(dispatch, getState) => {
+        return async(dispatch) => {
             dispatch({ type: PROCESS_CART })
-            const { data } = await getProductById(id)
-
-            let objCart = {
-                id: data.id,
-                title: data.title,
-                quantity:  qty,
-                newPrice: data.newPrice,
-                imageUrl: data.imageUrl
-            }
-
+            const { data } = await addToCart(id, qty, variantData)
             dispatch({
                 type: ADD_QUANTITY_WITH_NUMBER,
-                payload:{
-                    product: objCart,
-                }
+                payload: data
             })    
-            cookie.set('3aguas_commerce_items',JSON.stringify(getState().cartReducer.addedItems))
         }
         
     } catch (error) {  
@@ -111,33 +101,55 @@ export const addQuantityWithNumber = (id, qty) => {
 //remove item
 export const removeItem = (id) => {
 
-    return (dispatch, getState) => {
+    return async(dispatch) => {
+        dispatch({type: PROCESS_CART})
+        const { data } = await removeFromCart(id) 
+        console.log(data)
         dispatch({
             type: REMOVE_ITEM,
-            id
+            payload: data
         })
-        cookie.set('3aguas_commerce_items',JSON.stringify(getState().cartReducer.addedItems))
     }    
 };
 
 //add qt action
-export const addQuantity = (id) => {
-    return (dispatch, getState) => {
-        dispatch({
-            type: ADD_QUANTITY,
-            id
-        })        
-        cookie.set('3aguas_commerce_items',JSON.stringify(getState().cartReducer.addedItems))
+export const addQuantity = (id, qty) => {
+
+    return async (dispatch) => {
+        let option ={
+            quantity: qty
+        }
+        let { data, success } = await updateItemCart(id, option)
+        if(success){
+            dispatch({
+                type: ADD_QUANTITY,
+                payload: data
+            })
+        }        
     }
 };
 
 //subtract qt action
-export const subtractQuantity = (id) => {
-    return (dispatch, getState) => {
-        dispatch({
-            type: SUB_QUANTITY,
-            id
-        })        
-        cookie.set('3aguas_commerce_items',JSON.stringify(getState().cartReducer.addedItems))
+export const subtractQuantity = (id, qty) => {    
+    return async (dispatch) => {
+        dispatch({type: PROCESS_CART})
+        let option ={
+            quantity: qty
+        }
+        let { data, success } = await updateItemCart(id, option)
+        if(success){
+            dispatch({
+                type: ADD_QUANTITY,
+                payload: data
+            })
+        }      
     }
 };
+
+export const currentCart = () =>{    
+    return async (dispatch) =>{
+        dispatch({type: PROCESS_CART})
+        const cart = await getCart()        
+        dispatch({type: SET_CART, payload: cart.data})
+    }
+}

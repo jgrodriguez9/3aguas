@@ -78,7 +78,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps= (dispatch)=>{
     return {
-        resetCart: () => { dispatch(resetCart()) }
+        //resetCart: () => { dispatch(resetCart()) }
+        resetCart: () => { }
     }
 }
 

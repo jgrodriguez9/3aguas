@@ -1,19 +1,19 @@
 import '../styles.scss';
-import React, { useEffect, useState } from 'react';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import { ToastContainer } from 'react-toastify';
 import Layout from '../components/_App/Layout';
-import { addProducts } from '../store/actions/cartActions';
+import { addProducts, currentCart } from '../store/actions/cartActions';
 import { checkUserLogin, setCustomer } from '../store/actions/securityAction';
 import store from '../store/store';
 import RouteGuard from '../components/security/RouteGuard';
-import {getProductList} from "../store/actions/commerceAction";
 
 const MyApp = ({Component, pageProps}) => {
     
     useEffect(()=>{
         store.dispatch(setCustomer())
+        store.dispatch(currentCart())
     })
 
     return (

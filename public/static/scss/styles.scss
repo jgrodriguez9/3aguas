@@ -8736,6 +8736,12 @@ Checkout CSS
                   weight: 500;
                 }
               }
+              span.a {
+                display: inline-block;
+                font: {
+                  weight: 500;
+                }
+              }
             }
             &.order-subtotal,
             &.order-shipping,

@@ -11,3 +11,4 @@ export const RESET_CART = 'RESET_CART';
 export const ADD_PRODUCTS = 'ADD_PRODUCTS';
 export const PROCESS_CART = 'PROCESS_CART'
 export const FAIL_PROCESS_CART = 'FAIL_PROCESS_CART'
+export const SET_CART=  'SET_CART'

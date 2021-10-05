@@ -10,8 +10,7 @@ import Footer from '../components/Layouts/Footer';
 class Cart extends Component {
     render() {
         return (
-            <React.Fragment>
-               <TopHeader />
+            <>
                 <Navbar />
                 <PageBanner 
                     pageTitle="Cart" 
@@ -23,7 +22,7 @@ class Cart extends Component {
                 <FacilitySlider />
                 <InstagramFeed />
                 <Footer />
-            </React.Fragment>
+            </>
         );
     }
 }

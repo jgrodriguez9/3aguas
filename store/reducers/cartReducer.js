@@ -9,16 +9,19 @@ import {
     RESET_CART,
     ADD_PRODUCTS,
     PROCESS_CART,
-    FAIL_PROCESS_CART
+    FAIL_PROCESS_CART,
+    SET_CART
 } from '../constants/cartConstant';
+import { GENERATE_TOKEN_CHECKOUT, GET_SHIPPING_OPTION, PROCESS_CHECKOUT } from '../constants/checkoutConstant';
 
-const cartItemsFromStorage = cookie.get('3aguas_commerce_items') ? JSON.parse(cookie.get('3aguas_commerce_items'))  : []
-let newTotal = cartItemsFromStorage.length ? cartItemsFromStorage.reduce((acc, obj) => acc + (obj.newPrice * obj.quantity), 0) : 0
 const initState = {
+    cart: {},
+    checkout: null,
+    shippingOptions: [],
     loading: false,
     products: [],
-    addedItems:cartItemsFromStorage,
-    total: newTotal,
+    addedItems:[],
+    total: 0,
     shipping: 0,
     error: ''
 };
@@ -31,6 +34,12 @@ const cartReducer = (state = initState, action) => {
                 ...state,
                 loading: true
             }
+        case SET_CART:
+            return{
+                ...state,
+                loading: false,
+                cart: action.payload
+            }
         case FAIL_PROCESS_CART:
             return{
                 ...state,
@@ -38,74 +47,45 @@ const cartReducer = (state = initState, action) => {
                 error: action.payload
             }
         case ADD_QUANTITY_WITH_NUMBER:
-            //check if exist
-            const allItems = [...state.addedItems]
-            const itemSelected = action.payload.product
-            let existed_item= state.addedItems.findIndex(item=> item.id === itemSelected.id)
-            
-            if(existed_item >= 0){
-                let obj = Object.assign({}, allItems[existed_item])
-                obj.quantity = allItems[existed_item].quantity + itemSelected.quantity
-                allItems[existed_item] = obj
-
-                let newTotal = allItems.reduce((acc,obj) => (
-                    acc + (obj.newPrice * obj.quantity)
-                ), 0)
-                return {
-                    ...state,
-                    addedItems: allItems,
-                    total: newTotal,
-                    loading: false
-                }
-
-            }else{
-                let allItems = [...state.addedItems, itemSelected]
-                let newTotal = allItems.reduce((acc,obj) => (
-                    acc + (obj.newPrice * obj.quantity)
-                ), 0)
-                return {
-                    ...state,
-                    addedItems: allItems,
-                    total: newTotal,
-                    loading: false
-                }
+            return {
+                ...state,
+                loading: false,
+                cart: action.payload
             }
         case REMOVE_ITEM:
-            let itemToRemove= state.addedItems.find(item=> action.id === item.id)
-            let new_items = state.addedItems.filter(item=> action.id !== item.id)
-            
-            //calculating the total
-            let newTotal = state.total - (itemToRemove.newPrice * itemToRemove.quantity );
-
             return {
                 ...state,
-                addedItems: new_items,
-                total: newTotal
-        }      
+                loading: false,
+                cart: action.payload
+            }    
         case ADD_QUANTITY:
-            let addedItem = state.addedItems.find(item=> item.id === action.id)
-            addedItem.quantity += 1 
-            
             return {
                 ...state,
-                total: state.total + addedItem.newPrice
+                loading: false,
+                cart: action.payload
             }
         case SUB_QUANTITY:
-            let addedItemS = state.addedItems.find(item=> item.id === action.id) 
-            //if the qt == 0 then it should be removed
-            if(addedItemS.quantity === 1){
-                let new_items = state.addedItems.filter(item=>item.id !== action.id)
-                return {
-                    ...state,
-                    addedItems: new_items,
-                    total: state.total - addedItemS.newPrice
-                }
-            } else {
-                addedItemS.quantity -= 1
-                return {
-                    ...state,
-                    total: state.total - addedItemS.newPrice
-                }
+            return {
+                ...state,
+                loading: false,
+                cart: action.payload
+            }   
+        case PROCESS_CHECKOUT:
+            return{
+                ...state,
+                loading: true
+            }  
+        case GENERATE_TOKEN_CHECKOUT:
+            return{
+                ...state,
+                loading: false,
+                checkout: action.payload
+            }
+        case GET_SHIPPING_OPTION:
+            return{
+                ...state,
+                loading: false,
+                shippingOptions: action.payload
             }
         default:
             return state
