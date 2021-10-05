@@ -17,7 +17,6 @@ export const parseProduct = productObj =>{
         offer: false,
         oldPrice: productObj.price.raw,
         onSale: false,
-        title: productObj.name,
         categories: productObj.categories,
         variant_groups: productObj.variant_groups,
         type: "Women Clothes",
