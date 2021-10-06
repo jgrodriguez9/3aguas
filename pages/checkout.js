@@ -19,10 +19,7 @@ function Checkout(){
                 homePageText="Home" 
                 activePageText="Checkout" 
             /> 
-            <CheckoutContent /> 
-            <FacilitySlider />
-            <InstagramFeed />
-            <Footer />
+            <CheckoutContent />
         </>
     );
 }

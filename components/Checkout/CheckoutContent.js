@@ -24,7 +24,6 @@ function CheckoutContent() {
         state: {value: "ROO", error: ""},
         zip: {value: "", error: ""},
         email: {value: "", error: ""},
-        phone: {value: "", error: ""},
         fullName: {value: "", error: ""},
         shippingmethod: {value: "", error: ""}
     };
@@ -92,13 +91,6 @@ function CheckoutContent() {
             }
         },
 
-        fullName: {
-            required: true,
-            validator: {
-                error: "Invalid address format."
-            }
-        },
-
         address: {
             required: true,
             validator: {
@@ -147,14 +139,6 @@ function CheckoutContent() {
             validator: {
                 regEx: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 error: "Invalid email format."
-            }
-        },
-
-        phone: {
-            required: true,
-            validator: {
-                regEx: /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{9})$/,
-                error: "Invalid phone number format use like +2923432432432."
             }
         }
     };
@@ -207,7 +191,7 @@ function CheckoutContent() {
                                         </div>
                                     </div>
 
-                                    <div className="col-lg-6 col-md-6">
+                                    <div className="col-lg-12 col-md-12">
                                         <div className="form-group">
                                             <label>Email Address <span className="required">*</span></label>
                                             <input 
@@ -220,41 +204,14 @@ function CheckoutContent() {
                                             {state.email.error && <p style={errorStyle}>{state.email.error}</p>}
                                         </div>
                                     </div>
-
-                                    <div className="col-lg-6 col-md-6">
-                                        <div className="form-group">
-                                            <label>Phone <span className="required">*</span></label>
-                                            <input 
-                                                type="text" 
-                                                name="phone"
-                                                className="form-control" 
-                                                onChange={handleOnChange}
-                                                value={state.phone.value}
-                                            />
-                                            {state.phone.error && <p style={errorStyle}>{state.phone.error}</p>}
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
                             <div className="billing-details">
+                                <br/>
                                 <h3 className="title">Shipping address</h3>
 
                                 <div className="row">
-
-                                    <div className="col-lg-12 col-md-12">
-                                        <div className="form-group">
-                                            <label>Full name <span className="required">*</span></label>
-                                            <input 
-                                                type="text" 
-                                                name="fullName"
-                                                className="form-control" 
-                                                onChange={handleOnChange}
-                                                value={state.fullName.value}
-                                            />
-                                            {state.fullName.error && <p style={errorStyle}>{state.fullName.error}</p>}
-                                        </div>
-                                    </div>
 
                                     <div className="col-lg-6 col-md-6">
                                         <div className="form-group">
