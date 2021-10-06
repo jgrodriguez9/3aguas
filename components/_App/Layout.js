@@ -21,7 +21,8 @@ const Layout = ({children}) => {
                 <link rel="canonical" href="https://livani-react.envytheme.com/"></link>
                 <meta property="og:image" content="https://demaxin.s3.ap-south-1.amazonaws.com/cd19-2-1589216093113.jpg" />
             </Head>
-            {loader ? 'Loading' : children}
+            {/* {loader ? 'Loading' : children} */}
+            {children}
             <GoTop scrollStepInPx="100" delayInMs="10.50" />
         </React.Fragment>
     );
