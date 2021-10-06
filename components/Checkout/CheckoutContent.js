@@ -11,9 +11,9 @@ function CheckoutContent() {
     const dispatch = useDispatch()
     const [countries, setCountries] = useState({})
     const [regions, setRegions] = useState({})
-    function handleSubmit() {
-        console.log("Form submitted.");
-    }
+    const [selectedGateway, setSelectedGateway] = useState('test_gateway')
+
+
 
     const stateSchema = {
         country: {value: "MX", error: ""},
@@ -25,69 +25,25 @@ function CheckoutContent() {
         zip: {value: "", error: ""},
         email: {value: "", error: ""},
         fullName: {value: "", error: ""},
-        shippingmethod: {value: "", error: ""}
+        shippingmethod: {value: "", error: ""},
+        orderNotes: {value: ""},
+
     };
-
-    
-    
-    useEffect(()=>{
-        //generate token checkout
-        if(cart.id){
-
-            (async () => {
-                let data = await dispatch(checkoutGenerateToken(cart.id))
-
-                //get cpuntries donde se puede enviar
-                getAllCountriesShipping(data)
-                getAllRegionsShipping(data)
-                
-                //get shipping methods
-                console.log('get shipping methods')
-                dispatch(getShippingOptions(data.id, stateSchema.country.value))
-              })()
-
-            
-        }
-    },[])
-    //console.log(checkout)
-
-    const getAllCountriesShipping = (checkout) => {
-        getAllCountriesToShipping(checkout.id)
-        .then(response=>{
-            setCountries(response.data)
-        })
-        .catch(error=>{
-            console.log(error)
-        })
-    }
-    const getAllRegionsShipping = (checkout) => {
-        getAllRegionsToShippingForACountry(checkout.id, stateSchema.country.value)
-        .then(response=>{
-            //console.log(response)
-            setRegions(response.data)
-        })
-        .catch(error=>{
-            console.log(error)
-        })
-    }
-    
-    
-    
 
     const validationStateSchema = {
         firstName: {
             required: true,
             validator: {
-            regEx: /^[a-zA-Z]+$/,
-            error: "Invalid first name format."
+                regEx: /^[a-zA-Z]+$/,
+                error: "Invalid first name format."
             }
         },
 
         lastName: {
             required: true,
             validator: {
-            regEx: /^[a-zA-Z]+$/,
-            error: "Invalid last name format."
+                regEx: /^[a-zA-Z]+$/,
+                error: "Invalid last name format."
             }
         },
 
@@ -148,11 +104,62 @@ function CheckoutContent() {
         validationStateSchema,
         handleSubmit
     );
-    
+
     const errorStyle = {
         color: "red",
         fontSize: "13px"
     };
+
+    
+    
+    useEffect(()=>{
+        //generate token checkout
+        if(cart.id){
+            (async () => {
+                let data = await dispatch(checkoutGenerateToken(cart.id))
+
+                //get countries donde se puede enviar
+                getAllCountriesShipping(data)
+                getAllRegionsShipping(data)
+                
+                //get shipping methods
+                console.log('get shipping methods')
+                dispatch(getShippingOptions(data.id, stateSchema.country.value))
+              })()
+
+            
+        }
+    },[])
+    //console.log(checkout)
+
+    const getAllCountriesShipping = (checkout) => {
+        getAllCountriesToShipping(checkout.id)
+        .then(response=>{
+            setCountries(response.data)
+        })
+        .catch(error=>{
+            console.log(error)
+        })
+    }
+    const getAllRegionsShipping = (checkout) => {
+        getAllRegionsToShippingForACountry(checkout.id, stateSchema.country.value)
+        .then(response=>{
+            //console.log(response)
+            setRegions(response.data)
+        })
+        .catch(error=>{
+            console.log(error)
+        })
+    }
+
+    function handleSubmit() {
+        console.log("Form submitted.");
+    }
+    
+    
+    
+
+
     return (
         <section className="checkout-area ptb-100">
             <div className="container">           
