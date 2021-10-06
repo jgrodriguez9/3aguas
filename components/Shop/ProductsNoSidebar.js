@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import SingleProduct from '../Common/SingleProduct';
-import { addToCart } from '../../store/actions/cartActions';
 import QuickViewModal from '../Modals/QuickViewModal';
 import Pagination from '../Common/Pagination';
 
@@ -42,7 +41,7 @@ class ProductsNoSidebar extends Component {
     }
 
     handleAddToCart = (id) => {
-        this.props.addToCart(id); 
+        //this.props.addToCart(id); 
         toast.success('Added to the cart', {
             position: "bottom-left",
             autoClose: 5000,
@@ -121,7 +120,8 @@ class ProductsNoSidebar extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addToCart: (id) => { dispatch(addToCart(id)) }
+        //addToCart: (id) => { dispatch(addToCart(id)) }
+        addToCart: () => { }
     }
 }
 
