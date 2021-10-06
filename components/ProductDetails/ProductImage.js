@@ -1,106 +1,74 @@
-import React, { Component } from 'react';
+import React, {Component, useState} from 'react';
 import Slider from "react-slick";
 
-class ProductImage extends Component {
+function ProductImage({items}) {
+    const [assets, setAssets] = useState(items)
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            nav1: null,
-            nav2: null
-        };
-    }
-    
-    componentDidMount() {
-        this.setState({
-            nav1: this.slider1,
-            nav2: this.slider2
-        });
-    }
+    const [slider1, setSlider1] = useState(null)
+    const [slider2, setSlider2] = useState(null)
+    const [nav1, setNav1] = useState(slider1)
+    const [nav2, setNav2] = useState(slider2)
 
-    renderSliderMainImages = () => {
-        return DEFAULT_PROPS.map(({id, image}) => {
+    const renderSliderMainImages = () => {
+        return assets.map(({id, url}) => {
             return (
                 <div key={id}>
                     <div className="item">
-                        <img src={this.props.imageUrl} alt="image" />
+                        <img src={url} alt="image"/>
                     </div>
                 </div>
             )
         })
     }
 
-    renderSliderSubImages = () => {
-        return DEFAULT_PROPS.map(({id, image}) => {
+    const renderSliderSubImages = () => {
+        return assets.map(({id, url}) => {
             return (
                 <div key={id}>
                     <div className="item">
-                        <img src={this.props.imageUrl} alt="image" />
+                        <img src={url} alt="image"/>
                     </div>
                 </div>
             )
         })
     }
 
-    render() {
-        return (
-            <div className="products-page-gallery">
-                <div className="product-page-gallery-main">
-                    <div>
-                        <Slider
-                            asNavFor={this.state.nav2}
-                            ref={slider => (this.slider1 = slider)}
-                        >
-                            {
-                                this.renderSliderMainImages()
-                            }
-                        </Slider>
-                    </div>
-                </div>
 
-                <div className="product-page-gallery-preview">
-                    <div>
-                        <Slider
-                            asNavFor={this.state.nav1}
-                            ref={slider => (this.slider2 = slider)}
-                            slidesToShow={5}
-                            swipeToSlide={true}
-                            focusOnSelect={true}
-                            arrows={false}
-                            dots={false}
-                        >
-                            {
-                                this.renderSliderSubImages()
-                            }
-                        </Slider>
-                    </div>
+    return (
+        <div className="products-page-gallery">
+            <div className="product-page-gallery-main">
+                <div>
+                    <Slider
+                        asNavFor={nav2}
+                        ref={slider => (setSlider1(slider))}
+                    >
+                        {
+                            renderSliderMainImages()
+                        }
+                    </Slider>
                 </div>
             </div>
-        );
-    }
+
+            <div className="product-page-gallery-preview">
+                <div>
+                    <Slider
+                        asNavFor={nav1}
+                        ref={slider => (setSlider2(slider))}
+                        slidesToShow={5}
+                        swipeToSlide={true}
+                        focusOnSelect={true}
+                        arrows={false}
+                        dots={false}
+                    >
+                        {
+                            renderSliderSubImages()
+                        }
+                    </Slider>
+                </div>
+            </div>
+        </div>
+    );
 }
 
-const DEFAULT_PROPS = [
-    {
-        id: 1,
-        image: require('../../images/products/img3.jpg')
-    },
-    {
-        id: 2,
-        image: require('../../images/products/img4.jpg')
-    },
-    {
-        id: 3,
-        image: require('../../images/products/img-hover3.jpg')
-    },
-    {
-        id: 4,
-        image: require('../../images/products/img-hover4.jpg')
-    },
-    {
-        id: 5,
-        image: require('../../images/products/img7.jpg')
-    },
-];
 
 export default ProductImage;

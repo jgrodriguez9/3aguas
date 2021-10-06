@@ -8,7 +8,7 @@ import ProductDetailsStyleOne from "../../components/ProductDetails/ProductDetai
 import { getProductById, getProducts } from "../../server/api/products"
 
 function Product({product}){
-    //console.log(product)
+
     return (
         <>
             <TopHeader />

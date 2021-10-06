@@ -51,12 +51,6 @@ class FacilitySlider extends Component {
                         className="facility-slides owl-carousel owl-theme"
                         {...options}
                     >
-                        <div className="single-facility-box">
-                            <div className="icon">
-                                <i className='flaticon-tracking'></i>
-                            </div>
-                            <h3>Free Shipping Worldwide</h3>
-                        </div>
 
                         <div className="single-facility-box">
                             <div className="icon">
@@ -69,14 +63,14 @@ class FacilitySlider extends Component {
                             <div className="icon">
                                 <i className='flaticon-shuffle'></i>
                             </div>
-                            <h3>7 Day Exchange Policy</h3>
+                            <h3>Exchange Policy</h3>
                         </div>
 
                         <div className="single-facility-box">
                             <div className="icon">
                                 <i className='flaticon-sale'></i>
                             </div>
-                            <h3>Weekend Discount Coupon</h3>
+                            <h3>Many Discount Coupon</h3>
                         </div>
 
                         <div className="single-facility-box">
@@ -86,19 +80,6 @@ class FacilitySlider extends Component {
                             <h3>Secure Payment Methods</h3>
                         </div>
 
-                        <div className="single-facility-box">
-                            <div className="icon">
-                                <i className='flaticon-location'></i>
-                            </div>
-                            <h3>Track Your Order</h3>
-                        </div>
-
-                        <div className="single-facility-box">
-                            <div className="icon">
-                                <i className='flaticon-customer-service'></i>
-                            </div>
-                            <h3>24/7 Customer Support</h3>
-                        </div>
                     </OwlCarousel> : ''}
                 </div>
             </div>

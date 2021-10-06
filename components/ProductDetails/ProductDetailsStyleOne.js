@@ -9,6 +9,7 @@ import RelatedProducts from './RelatedProducts';
 import ProductImage from './ProductImage';
 import VariantColor from './VariantColor';
 import VariantSize from './VariantSize';
+import CategoriesList from "./CategoriesList";
 
 
 
@@ -65,7 +66,6 @@ function ProductDetailsStyleOne({item}){
     }
 
     const selectVariantColor = (it) =>{
-        console.log(it)
         setVariantColorSelected(it.id)
         setProduct(prev=>({
             ...prev,
@@ -88,7 +88,7 @@ function ProductDetailsStyleOne({item}){
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-5 col-md-12">
-                            <ProductImage imageUrl={product.imageUrl} />
+                            <ProductImage items={product.assets} />
                         </div>
 
                         <div className="col-lg-7 col-md-12">
@@ -103,43 +103,32 @@ function ProductDetailsStyleOne({item}){
                                             <span className="new-price">${product.newPrice}</span>
                                         </>
                                     ) : (
-                                        <span className="new-price">${product.oldPrice}</span>
+                                        <span className="new-price">${product.newPrice}</span>
                                     )
                                 }
                                 </div>
 
-                                <div className="products-review">
-                                    <div className="rating">
-                                        <i className='bx bx-star'></i>
-                                        <i className='bx bx-star'></i>
-                                        <i className='bx bx-star'></i>
-                                        <i className='bx bx-star'></i>
-                                        <i className='bx bx-star'></i>
-                                    </div>
-
-                                    <Link href="#">
-                                        <a onClick={e => e.preventDefault()} className="rating-count">3 reviews</a>
-                                    </Link>
-                                </div>
 
                                 <ul className="products-info">
+
                                     <li>
-                                        <span>Vendor:</span> 
-                                        <Link href="#">
-                                            <a onClick={e => e.preventDefault()}>Lereve</a>
-                                        </Link>
+                                        <span>Availability:</span>
+                                        {
+                                            product.inventory.available > 0 ? (
+                                                    <Link href="#">
+                                                        <a onClick={e => e.preventDefault()}>In stock ({product.inventory.available} items)</a>
+                                                    </Link>
+                                                )
+                                                : (
+                                                    <Link href="#">
+                                                        <a onClick={e => e.preventDefault()}>In stock</a>
+                                                    </Link>
+                                                )
+                                        }
+
                                     </li>
                                     <li>
-                                        <span>Availability:</span> 
-                                        <Link href="#">
-                                            <a onClick={e => e.preventDefault()}>In stock (7 items)</a>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <span>Products Type:</span> 
-                                        <Link href="#">
-                                            <a onClick={e => e.preventDefault()}>T-Shirt</a>
-                                        </Link>
+                                        <CategoriesList categories={product.categories} />
                                     </li>
                                 </ul>
 
@@ -161,28 +150,6 @@ function ProductDetailsStyleOne({item}){
                                     />
                                 }
 
-                                <div className="products-info-btn">
-                                    <Link href="#">
-                                        <a onClick={e => e.preventDefault()} data-toggle="modal" data-target="#sizeGuideModal">
-                                            <i className='bx bx-crop'></i> 
-                                            Size guide
-                                        </a>
-                                    </Link>
-
-                                    <Link href="#">
-                                        <a onClick={e => e.preventDefault()} data-toggle="modal" data-target="#productsShippingModal">
-                                            <i className='bx bxs-truck'></i> 
-                                            Shipping
-                                        </a>
-                                    </Link>
-
-                                    <Link href="/contact">
-                                        <a onClick={e => e.preventDefault()}>
-                                            <i className='bx bx-envelope'></i> 
-                                            Ask about this products
-                                        </a>
-                                    </Link>
-                                </div>
 
                                 <div className="products-add-to-cart">
                                     <div className="input-counter">
@@ -218,21 +185,7 @@ function ProductDetailsStyleOne({item}){
                                     </button>
                                 </div>
 
-                                <div className="wishlist-compare-btn">
-                                    <Link href="#">
-                                        <a onClick={e => e.preventDefault()} className="optional-btn">
-                                            <i className='bx bx-heart'></i> 
-                                            Add to Wishlist
-                                        </a>
-                                    </Link>
 
-                                    <Link href="#">
-                                        <a onClick={e => e.preventDefault()} className="optional-btn">
-                                            <i className='bx bx-refresh'></i> 
-                                            Add to Compare
-                                        </a>
-                                    </Link>
-                                </div>
 
                                 <div className="buy-checkbox-btn">
                                     <div className="item">
@@ -258,7 +211,7 @@ function ProductDetailsStyleOne({item}){
                     </div>
 
                     {/* Product Details Tab */}
-                    <ProductDetailsTab />
+                    <ProductDetailsTab  item={item} />
                 </div>
 
                 {/* Related Products */}
