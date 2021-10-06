@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import TopHeader from '../components/Layouts/TopHeader';
 import Navbar from '../components/Layouts/Navbar';
 import PageBanner from '../components/Common/PageBanner';
-import ContactForm from '../components/Contact/ContactForm';
 import FacilitySlider from '../components/Common/FacilitySlider';
 import InstagramFeed from '../components/Common/InstagramFeed';
 import Footer from '../components/Layouts/Footer';
@@ -19,7 +18,6 @@ class Contact extends Component {
                     homePageText="Home" 
                     activePageText="Contact Us" 
                 /> 
-                <ContactForm />
                 <FacilitySlider />
                 <InstagramFeed />
                 <Footer />

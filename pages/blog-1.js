@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import TopHeader from '../components/Layouts/TopHeader';
 import Navbar from '../components/Layouts/Navbar';
 import PageBanner from '../components/Common/PageBanner';
-import BlogGridTwo from '../components/Blog/BlogGridTwo';
 import FacilitySlider from '../components/Common/FacilitySlider';
 import InstagramFeed from '../components/Common/InstagramFeed';
 import Footer from '../components/Layouts/Footer';
@@ -19,7 +18,6 @@ class Blog1 extends Component {
                     homePageText="Home" 
                     activePageText="Blog" 
                 /> 
-                <BlogGridTwo />
                 <FacilitySlider />
                 <InstagramFeed />
                 <Footer />
