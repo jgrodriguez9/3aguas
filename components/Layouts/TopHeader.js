@@ -55,14 +55,6 @@ function TopHeader(){
                                 </li>
 
                                 <li>
-                                    <Link href="/compare">
-                                        <a>
-                                            <i className='bx bx-shuffle'></i> Compare
-                                        </a>
-                                    </Link>
-                                </li>
-
-                                <li>
                                     {customer ? (
                                         <Link href="#">
                                             <a onClick={handleLogout}>

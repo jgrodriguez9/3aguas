@@ -4,7 +4,6 @@ import Router from 'next/router'
 import StripeCheckout from 'react-stripe-checkout';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import { resetCart } from '../../store/actions/cartActions';
 import {firebase} from '../../firebase';
 
 class Payments extends React.Component {
@@ -30,7 +29,7 @@ class Payments extends React.Component {
         const db = firebase.firestore();
         const dbOrderRef = db.collection('orders');
         dbOrderRef.add(body).then(() => {
-            this.props.resetCart();
+            // this.props.resetCart();
             toast.success('Submitted the order, we will contact you soon.', {
                 position: "bottom-left",
                 autoClose: 3000,

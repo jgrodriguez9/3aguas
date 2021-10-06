@@ -64,4 +64,3 @@ function RecentProducts({products})  {
 
 }
 export default RecentProducts
-

@@ -9,6 +9,10 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
+    "/": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
     "/_app": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
@@ -25,6 +29,22 @@
       "static/runtime/main.js"
     ],
     "/checkout": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/index": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/login": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/my-account": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/product/[id]": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]
