@@ -10,8 +10,6 @@ import ProductImage from './ProductImage';
 import VariantColor from './VariantColor';
 import VariantSize from './VariantSize';
 
-
-
 function ProductDetailsStyleOne({item}){
     const [product, setProduct] = useState(item)
     const dispatch = useDispatch()
